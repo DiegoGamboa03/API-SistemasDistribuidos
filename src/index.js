@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-const db = require('./Config/DatabaseConfig');
 
 
 app.set('port', process.env.port || 3000)
@@ -12,7 +11,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
 //routes
-
+app.use('/devices', require('./Routes/Devices'));
 
 app.listen(3000, () =>{
     console.log(`Server on port ${app.get('port')}`)
