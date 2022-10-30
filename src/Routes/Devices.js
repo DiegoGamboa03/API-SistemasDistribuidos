@@ -38,8 +38,8 @@ router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Devices SET ?';
   
     const deviceObj = {
-      cedula: req.body.Cedula,
-      COD: req.body.COD
+      id: req.body.ID,
+      type: req.body.Type
     };
     
     // Aqui poner las verificaciones
