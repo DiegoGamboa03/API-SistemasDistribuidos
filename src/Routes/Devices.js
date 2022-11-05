@@ -7,13 +7,12 @@ router.get('/', (req, res) => {
 
     conn.query(sql, (error, results) => {
     if (error){
-      res.send(error.sqlMessage);
-      return;
+      res.status(404)
     }
     if (results.length > 0) {
       res.json(results);
     } else {
-      res.status(204).send("No devices");
+      res.status(204);
     }
     });
 });
@@ -23,13 +22,16 @@ router.get('/:id', (req, res) => {
     const sql = `SELECT * FROM Devices WHERE ID = ${id}`;
     conn.query(sql, (error, result) => {
         if (error){
-            res.send(error.sqlMessage);
+            res.statusCode = 404; //meter un status que tenga aqui
+            res.send('error');
             return;
         }
       if (result.length > 0) {
         res.json(result);
       } else {
-        res.status(204).send("No devices");
+        res.statusCode = 202; //meter un status que tenga aqui
+        res.send('No hay nada');
+        return;
       }
     });
   });

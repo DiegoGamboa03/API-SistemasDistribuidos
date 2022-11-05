@@ -12,6 +12,9 @@ app.use(express.json());
 
 //routes
 app.use('/devices', require('./Routes/Devices'));
+app.use('/publishers', require('./Routes/Publishers'));
+app.use('/subscribers', require('./Routes/Subscribers'));
+app.use('/topics', require('./Routes/Topics'));
 
 app.listen(3000, () =>{
     console.log(`Server on port ${app.get('port')}`)
