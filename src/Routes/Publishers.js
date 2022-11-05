@@ -7,16 +7,17 @@ router.get('/', (req, res) => {
 
     conn.query(sql, (error, results) => {
     if (error){
+      if(error.errno == 1054) {
+        res.statusCode = 202; 
+        res.send('No devices found');
+        return;
+      }
       res.statusCode = 500; //meter un status que tenga aqui
       res.send(error.sqlMessage);
       return;
     }
     if (results.length > 0) {
       res.json(results);
-    } else {
-      res.statusCode = 202; 
-      res.send('No publishers found');
-      return;
     }
     });
 });
@@ -26,17 +27,18 @@ router.get('/:id/:topic', (req, res) => {
     const sql = `SELECT * FROM Publishers WHERE ID = ${id} AND Topic = ${topic}`;
     conn.query(sql, (error, result) => {
         if (error){
+          if(error.errno == 1054) {
+            res.statusCode = 202; 
+            res.send('No devices found');
+            return;
+          }
           res.statusCode = 500;
           res.send(error.sqlMessage);
           return;
         }
       if (result.length > 0) {
         res.json(result);
-      } else {
-        res.statusCode = 202; 
-        res.send('No publisher found');
-        return;
-      }
+      } 
     });
   });
 
@@ -52,6 +54,11 @@ router.post('/add', (req, res) => {
     
     conn.query(sql, PublisherObj, error => {
         if (error){
+          if(error.errno == 1054) {
+            res.statusCode = 202; 
+            res.send('No devices found');
+            return;
+          }
           res.statusCode = 500;
           res.send(error.sqlMessage);
           return;
@@ -67,11 +74,16 @@ router.delete('/delete/:id/:topic', (req, res) => {
   
     conn.query(sql, error => {
         if (error){
+          if(error.errno == 1054) {
+            res.statusCode = 202; 
+            res.send('No devices found');
+            return;
+          }
           res.statusCode = 500;
           res.send(error.sqlMessage);
           return;
         }
-        res.send('Publisher deleted!');
+        res.send('Delete publisher');
     });
 });
   

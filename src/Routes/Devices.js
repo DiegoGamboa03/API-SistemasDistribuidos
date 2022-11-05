@@ -7,17 +7,17 @@ router.get('/', (req, res) => {
 
     conn.query(sql, (error, results) => {
     if (error){
-      res.statusCode = 500; //meter un status que tenga aqui
+      if(error.errno == 1054) {
+        res.statusCode = 202; 
+        res.send('No devices found');
+        return;
+      }
+      res.statusCode = 500;
       res.send(error.sqlMessage);
       return;
-    }
-    if (results.length > 0) {
+    }else if (results.length > 0) {
       res.json(results);
-    } else {
-      res.statusCode = 202; 
-      res.send('No devices found');
-      return;
-    }
+    } 
     });
 });
 
@@ -25,17 +25,17 @@ router.get('/:id', (req, res) => {
     const { id } = req.params;
     const sql = `SELECT * FROM Devices WHERE ID = ${id}`;
     conn.query(sql, (error, result) => {
-        if (error){
-            res.statusCode = 500; //meter un status que tenga aqui
-            res.send('error');
+      if (error){
+          if(error.errno == 1054) {
+            res.statusCode = 202; 
+            res.send('No devices found');
             return;
-        }
-      if (result.length > 0) {
+          }
+          res.statusCode = 500; //meter un status que tenga aqui
+          res.send(error.sqlMessage);
+          return;
+      }else if (result.length > 0) {
         res.json(result);
-      } else {
-        res.statusCode = 202; 
-        res.send('No devices found');
-        return;
       }
     });
   });
@@ -52,6 +52,11 @@ router.post('/add', (req, res) => {
     
     conn.query(sql, deviceObj, error => {
         if (error){
+            if(error.errno == 1054) {
+              res.statusCode = 202; 
+              res.send('No devices found');
+              return;
+            }
             res.statusCode = 500; //meter un status que tenga aqui
             res.send(error.sqlMessage);
             return;
@@ -70,6 +75,11 @@ router.put('/:id', (req, res) => {
   
     conn.query(sql, error => {
         if (error){
+            if(error.errno == 1054) {
+              res.statusCode = 202; 
+              res.send('No devices found');
+              return;
+            }
             res.statusCode = 500; //meter un status que tenga aqui
             res.send(error.sqlMessage);
             return;
@@ -84,9 +94,14 @@ router.delete('/delete/:id', (req, res) => {
   
     conn.query(sql, error => {
         if (error){
-            res.statusCode = 500; //meter un status que tenga aqui
-            res.send(error.sqlMessage);
+          if(error.errno == 1054) {
+            res.statusCode = 202; 
+            res.send('No devices found');
             return;
+          }
+          res.statusCode = 500; //meter un status que tenga aqui
+          res.send(error.sqlMessage);
+          return;
         }
         res.send('Delete device');
     });

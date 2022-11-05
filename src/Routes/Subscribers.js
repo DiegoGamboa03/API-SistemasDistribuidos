@@ -7,17 +7,17 @@ router.get('/', (req, res) => {
 
     conn.query(sql, (error, results) => {
     if (error){
+      if(error.errno == 1054) {
+        res.statusCode = 202; 
+        res.send('No devices found');
+        return;
+      }
       res.statusCode = 500;
       res.send(error.sqlMessage);
       return;
-    }
-    if (results.length > 0) {
+    }else if (results.length > 0) {
       res.json(results);
-    } else {
-      res.statusCode = 202; 
-      res.send('No subscribers found');
-      return;
-    }
+    } 
     });
 });
 
@@ -26,17 +26,18 @@ router.get('/:device/:topic', (req, res) => {
     const sql = `SELECT * FROM Subscribers WHERE Device = ${device} AND Topic = ${topic}`;
     conn.query(sql, (error, result) => {
         if (error){
+          if(error.errno == 1054) {
+            res.statusCode = 202; 
+            res.send('No devices found');
+            return;
+          }
           res.statusCode = 500;
           res.send(error.sqlMessage);
           return;
         }
       if (result.length > 0) {
         res.json(result);
-      } else {
-        res.statusCode = 202; 
-        res.send('No subscriber found');
-        return;
-      }
+      } 
     });
   });
 
@@ -52,6 +53,11 @@ router.post('/add', (req, res) => {
     
     conn.query(sql, SubscriberObj, error => {
         if (error){
+          if(error.errno == 1054) {
+            res.statusCode = 202; 
+            res.send('No devices found');
+            return;
+          }
           res.statusCode = 500;
           res.send(error.sqlMessage);
           return;
@@ -67,6 +73,11 @@ router.delete('/delete/:device/:topic', (req, res) => {
   
     conn.query(sql, error => {
         if (error){
+          if(error.errno == 1054) {
+            res.statusCode = 202; 
+            res.send('No devices found');
+            return;
+          }
           res.statusCode = 500;
           res.send(error.sqlMessage);
           return;
