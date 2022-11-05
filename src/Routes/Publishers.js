@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 
 router.get('/isPublisher/:idPublisher/:topic', (req, res) => {
   const { idPublisher, topic } = req.params;
-  const sql = `SELECT confirmPublisher(${idPublisher},"${topic}")`;
+  const sql = `SELECT confirmPublisher(${idPublisher},"${topic}") AS isPublisher`;
   conn.query(sql, (error, results) => {
   if (error){
     res.statusCode = 500; //meter un status que tenga aqui
@@ -32,8 +32,9 @@ router.get('/isPublisher/:idPublisher/:topic', (req, res) => {
     return;
   }
   if (results.length > 0) {
-    res.send(results)
+    res.json(results);
   }});
+});
 
 router.get('/:id/:topic', (req, res) => {
     const { id, topic } = req.params;
