@@ -7,13 +7,16 @@ router.get('/', (req, res) => {
 
     conn.query(sql, (error, results) => {
     if (error){
+      res.statusCode = 500;
       res.send(error.sqlMessage);
       return;
     }
     if (results.length > 0) {
       res.json(results);
     } else {
-      res.status(204).send("No topics");
+      res.statusCode = 202; 
+      res.send('No topics found');
+      return;
     }
     });
 });
@@ -23,13 +26,16 @@ router.get('/:id', (req, res) => {
     const sql = `SELECT * FROM Topics WHERE ID = ${id}`;
     conn.query(sql, (error, result) => {
         if (error){
-            res.send(error.sqlMessage);
-            return;
+          res.statusCode = 500;
+          res.send(error.sqlMessage);
+          return;
         }
       if (result.length > 0) {
         res.json(result);
       } else {
-        res.status(204).send("No topic");
+        res.statusCode = 202; 
+        res.send('No topic found');
+        return;
       }
     });
   });
@@ -45,8 +51,9 @@ router.post('/add', (req, res) => {
     
     conn.query(sql, topicObj, error => {
         if (error){
-            res.send(error.sqlMessage);
-            return;
+          res.statusCode = 500;
+          res.send(error.sqlMessage);
+          return;
         }
         res.send('Topic created!');
     });
@@ -59,10 +66,11 @@ router.delete('/delete/:id', (req, res) => {
   
     conn.query(sql, error => {
         if (error){
-            res.send(error.sqlMessage);
-            return;
+          res.statusCode = 500;
+          res.send(error.sqlMessage);
+          return;
         }
-        res.send('Delete topic');
+        res.send('Topic deleted!');
     });
 });
   

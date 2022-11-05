@@ -7,12 +7,16 @@ router.get('/', (req, res) => {
 
     conn.query(sql, (error, results) => {
     if (error){
-      res.status(404)
+      res.statusCode = 500; //meter un status que tenga aqui
+      res.send(error.sqlMessage);
+      return;
     }
     if (results.length > 0) {
       res.json(results);
     } else {
-      res.status(204);
+      res.statusCode = 202; 
+      res.send('No devices found');
+      return;
     }
     });
 });
@@ -22,15 +26,15 @@ router.get('/:id', (req, res) => {
     const sql = `SELECT * FROM Devices WHERE ID = ${id}`;
     conn.query(sql, (error, result) => {
         if (error){
-            res.statusCode = 404; //meter un status que tenga aqui
+            res.statusCode = 500; //meter un status que tenga aqui
             res.send('error');
             return;
         }
       if (result.length > 0) {
         res.json(result);
       } else {
-        res.statusCode = 202; //meter un status que tenga aqui
-        res.send('No hay nada');
+        res.statusCode = 202; 
+        res.send('No devices found');
         return;
       }
     });
@@ -48,6 +52,7 @@ router.post('/add', (req, res) => {
     
     conn.query(sql, deviceObj, error => {
         if (error){
+            res.statusCode = 500; //meter un status que tenga aqui
             res.send(error.sqlMessage);
             return;
         }
@@ -65,6 +70,7 @@ router.put('/:id', (req, res) => {
   
     conn.query(sql, error => {
         if (error){
+            res.statusCode = 500; //meter un status que tenga aqui
             res.send(error.sqlMessage);
             return;
         }
@@ -78,6 +84,7 @@ router.delete('/delete/:id', (req, res) => {
   
     conn.query(sql, error => {
         if (error){
+            res.statusCode = 500; //meter un status que tenga aqui
             res.send(error.sqlMessage);
             return;
         }
