@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
 
 router.get('/:device/:topic', (req, res) => {
     const { device, topic } = req.params;
-    const sql = `SELECT * FROM Subscribers WHERE Device = ${device} AND Topic = ${topic}`;
+    const sql = `SELECT * FROM Subscribers WHERE Device = "${device}" AND Topic = "${topic}"`;
     conn.query(sql, (error, result) => {
         if (error){
           if(error.errno == 1054) {
@@ -69,7 +69,7 @@ router.post('/add', (req, res) => {
 
 router.delete('/delete/:device/:topic', (req, res) => {
     const { device, topic } = req.params;
-    const sql = `DELETE FROM Subscribers WHERE Device = ${device} AND Topic = ${topic}`;
+    const sql = `DELETE FROM Subscribers WHERE Device = "${device}" AND Topic = "${topic}"`;
   
     conn.query(sql, error => {
         if (error){

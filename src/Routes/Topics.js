@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
     const { id } = req.params;
-    const sql = `SELECT * FROM Topics WHERE ID = ${id}`;
+    const sql = `SELECT * FROM Topics WHERE ID = "${id}"`;
     conn.query(sql, (error, result) => {
         if (error){
           if(error.errno == 1054) {
@@ -38,6 +38,7 @@ router.get('/:id', (req, res) => {
         }
       if (result.length > 0) {
         res.json(result);
+        console.log(result)
       }
     });
   });
@@ -69,7 +70,7 @@ router.post('/add', (req, res) => {
 
 router.delete('/delete/:id', (req, res) => {
     const { id } = req.params;
-    const sql = `DELETE FROM Topics WHERE ID = ${id}`;
+    const sql = `DELETE FROM Topics WHERE ID = "${id}"`;
   
     conn.query(sql, error => {
         if (error){
@@ -86,4 +87,4 @@ router.delete('/delete/:id', (req, res) => {
     });
 });
   
-module.exports = router;
+module.exports = router; 

@@ -22,9 +22,22 @@ router.get('/', (req, res) => {
     });
 });
 
+router.get('/isPublisher/:idPublisher/:topic', (req, res) => {
+  const { idPublisher, topic } = req.params;
+  const sql = `SELECT confirmPublisher(${idPublisher},"${topic}")`;
+  conn.query(sql, (error, results) => {
+  if (error){
+    res.statusCode = 500; //meter un status que tenga aqui
+    res.send(error.sqlMessage);
+    return;
+  }
+  if (results.length > 0) {
+    res.send(results)
+  }});
+
 router.get('/:id/:topic', (req, res) => {
     const { id, topic } = req.params;
-    const sql = `SELECT * FROM Publishers WHERE ID = ${id} AND Topic = ${topic}`;
+    const sql = `SELECT * FROM Publishers WHERE ID = "${id}" AND Topic = "${topic}"`;
     conn.query(sql, (error, result) => {
         if (error){
           if(error.errno == 1054) {
@@ -70,7 +83,7 @@ router.post('/add', (req, res) => {
 
 router.delete('/delete/:id/:topic', (req, res) => {
     const { id, topic } = req.params;
-    const sql = `DELETE FROM Publishers WHERE ID = ${id} AND Topic = ${topic}`;
+    const sql = `DELETE FROM Publishers WHERE ID = "${id}" AND Topic = "${topic}"`;
   
     conn.query(sql, error => {
         if (error){
