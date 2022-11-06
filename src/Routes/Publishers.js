@@ -32,7 +32,7 @@ router.get('/isPublisher/:idPublisher/:topic', (req, res) => {
     return;
   }
   if (results.length > 0) {
-    res.json(results);
+    res.send(results[0]);
   }});
 });
 
