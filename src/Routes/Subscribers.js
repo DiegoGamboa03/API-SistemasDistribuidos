@@ -1,4 +1,4 @@
-const { Router } = require('express');
+const { Router, json } = require('express');
 const router = new Router();
 const conn = require('../Config/DatabaseConfig');
 
@@ -19,6 +19,29 @@ router.get('/', (req, res) => {
       res.json(results);
     } 
     });
+});
+
+router.get('/listTopic/:topic', (req, res) => {
+  const topic = req.params;
+  const sql = `SELECT Device FROM Subscribers WHERE Topic = "${topic}"`;
+  conn.query(sql, (error, result) => {
+      if (error){
+        if(error.errno == 1054) {
+          res.statusCode = 202; 
+          res.send('No devices found');
+          console.log(error.sqlMessage);
+          return;
+        }
+        res.statusCode = 500;
+        console.log(error.sqlMessage);
+        res.send(error.sqlMessage);
+        return;
+      }
+    if (result.length > 0) {
+      res.json(result); console.log('HOllaaa');
+      res.send(json)
+    } 
+  });
 });
 
 router.get('/:device/:topic', (req, res) => {
