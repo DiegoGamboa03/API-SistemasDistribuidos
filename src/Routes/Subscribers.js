@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/listTopic/:topic', (req, res) => {
-  const topic = req.params;
+  const {topic} = req.params;
   const sql = `SELECT Device FROM Subscribers WHERE Topic = "${topic}"`;
   conn.query(sql, (error, result) => {
       if (error){
