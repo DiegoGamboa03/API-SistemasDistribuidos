@@ -38,8 +38,7 @@ router.get('/listTopic/:topic', (req, res) => {
         return;
       }
     if (result.length > 0) {
-      res.json(result); console.log('HOllaaa');
-      res.send(json)
+      res.json(result); 
     } 
   });
 });

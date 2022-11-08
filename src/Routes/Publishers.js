@@ -37,10 +37,11 @@ router.get('/', (req, res) => {
 });*/
 
 router.get('/isPublisher/:idPublisher/:topic', (req, res) => {
-  const { idPublisher, topic } = req.params;
+  const { idPublisher, topic   } = req.params;
+  console.log(idPublisher);
   const sql = `SELECT COUNT(ID) as isPublisher
   FROM Publishers
-  WHERE ID = "${idPublisher}" AND Topic = "${topic}"`;
+  WHERE ID = "${idPublisher	}" AND Topic = "${topic}"`;
   conn.query(sql, (error, results) => {
   if (error){
     res.statusCode = 500; //meter un status que tenga aqui

@@ -59,6 +59,10 @@ router.post('/add', (req, res) => {
             res.send('No devices found');
             return;
           }
+          if(error.errno == 1062){
+            res.statusCode = 409;
+            res.send('Topic duplicated')
+          }
           res.statusCode = 500;
           res.send(error.sqlMessage);
           return;

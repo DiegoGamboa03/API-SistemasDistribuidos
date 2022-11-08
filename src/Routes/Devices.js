@@ -35,7 +35,8 @@ router.get('/:id', (req, res) => {
           res.send(error.sqlMessage);
           return;
       }else if (result.length > 0) {
-        res.json(result);
+        res.json(result[0]);
+        console.log(result)
       }
     });
   });
@@ -56,6 +57,10 @@ router.post('/add', (req, res) => {
               res.statusCode = 202; 
               res.send('No devices found');
               return;
+            }
+            if(error.errno == 1062){
+              res.statusCode = 409;
+              res.send('Device duplicated')
             }
             res.statusCode = 500; //meter un status que tenga aqui
             res.send(error.sqlMessage);
