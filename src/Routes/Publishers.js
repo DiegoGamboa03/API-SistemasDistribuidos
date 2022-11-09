@@ -78,8 +78,8 @@ router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Publishers SET ?';
   
     const PublisherObj = {
-      id: req.body.ID,
-      topic: req.body.Topic
+      id: req.body.id,
+      topic: req.body.topic
     };
     
     // Aqui poner las verificaciones

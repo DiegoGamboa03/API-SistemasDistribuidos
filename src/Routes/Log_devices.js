@@ -26,12 +26,12 @@ router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Log_devices SET ?';
   
     const LogObj = {
-      Device: req.body.ID,
+      Device: req.body.Device,
       Action_done: req.body.Action_done,
       Topic: req.body.Topic,
       Date_time: req.body.Date_time,
     };
-    
+    console.log(LogObj)
     // Aqui poner las verificaciones
     
     conn.query(sql, LogObj, error => {

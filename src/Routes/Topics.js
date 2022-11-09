@@ -47,7 +47,7 @@ router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Topics SET ?';
   
     const topicObj = {
-      id: req.body.ID
+      id: req.body.id
     };
     
     // Aqui poner las verificaciones
@@ -62,9 +62,11 @@ router.post('/add', (req, res) => {
           if(error.errno == 1062){
             res.statusCode = 409;
             res.send('Topic duplicated')
+            return;
           }
           res.statusCode = 500;
           res.send(error.sqlMessage);
+          console.log(error.sqlMessage)
           return;
         }
         res.send('Topic created!');
