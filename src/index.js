@@ -16,6 +16,9 @@ app.use('/publishers', require('./Routes/Publishers'));
 app.use('/subscribers', require('./Routes/Subscribers'));
 app.use('/topics', require('./Routes/Topics'));
 app.use('/log_devices', require('./Routes/Log_devices'));
+app.use('/users', require('./Routes/Users'));
+app.use('/rooms', require('./Routes/Rooms'));
+app.use('/rules', require('./Routes/Rules'));
 
 app.listen(3000, () =>{
     console.log(`Server on port ${app.get('port')}`)

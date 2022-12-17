@@ -46,7 +46,8 @@ router.post('/add', (req, res) => {
   
     const deviceObj = {
       id: req.body.ID,
-      type: req.body.Type
+      type: req.body.Type,
+      Room: req.body.room
     };
     
     // Aqui poner las verificaciones
@@ -73,10 +74,13 @@ router.post('/add', (req, res) => {
   
 router.put('/:id', (req, res) => {
     const { id } = req.params;
-    const {Type} = req.body;
+    const Type = req.body.Type;
+    const Room = req.body.room;
       const sql = 'UPDATE Devices SET '  +
-      `Type='${Type}',` + 
+      `Type='${Type}',` +
+      `Room='${Room}' ` +
       `WHERE ID='${id}'`;
+      console.log(sql);
   
     conn.query(sql, error => {
         if (error){
