@@ -46,14 +46,14 @@ router.get('/:id', (req, res) => {
 router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Users SET ?';
   
-    const topicObj = {
+    const userObj = {
       ID: req.body.id,
       password: req.body.password
     };
     
     // Aqui poner las verificaciones
     
-    conn.query(sql, topicObj, error => {
+    conn.query(sql, userObj, error => {
         if (error){
           if(error.errno == 1054) {
             res.statusCode = 202; 
