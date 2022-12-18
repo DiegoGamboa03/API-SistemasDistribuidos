@@ -19,6 +19,7 @@ app.use('/log_devices', require('./Routes/Log_devices'));
 app.use('/users', require('./Routes/Users'));
 app.use('/rooms', require('./Routes/Rooms'));
 app.use('/rules', require('./Routes/Rules'));
+app.use('/utils', require('./Routes/Utils'));
 
 app.listen(3000, () =>{
     console.log(`Server on port ${app.get('port')}`)

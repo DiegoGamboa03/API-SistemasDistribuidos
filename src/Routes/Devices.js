@@ -114,6 +114,7 @@ router.delete('/delete/:id', (req, res) => {
         }
         res.send('Delete device');
     });
+    
 });
   
 module.exports = router;
