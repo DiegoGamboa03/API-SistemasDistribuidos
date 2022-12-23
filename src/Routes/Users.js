@@ -23,25 +23,42 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-    const { id } = req.params;
-    const sql = `SELECT * FROM Users WHERE ID = "${id}"`;
-    conn.query(sql, (error, result) => {
-        if (error){
-          if(error.errno == 1054) {
-            res.statusCode = 202; 
-            res.send('No user found');
-            return;
-          }
-          res.statusCode = 500;
-          res.send(error.sqlMessage);
-          return;
-        }
-      if (result.length > 0) {
-        res.json(result);
-        console.log(result)
+  const { id } = req.params;
+  const sql = `SELECT * FROM Users WHERE ID = "${id}"`;
+  conn.query(sql, (error, result) => {
+    if (error) {
+      if (error.errno == 1054) {
+        res.statusCode = 202;
+        res.send('No user found');
+        return;
       }
-    });
+      res.statusCode = 500;
+      res.send(error.sqlMessage);
+      return;
+    }
+    if (result.length > 0) {
+      res.json(result);
+      console.log(result)
+    }
   });
+});
+
+router.get('/isUser/:id/:password', (req, res) => {
+  const { id, password } = req.params;
+  const sql = `SELECT COUNT(ID) as isUser
+  FROM Users
+  WHERE ID = "${id}" AND Password = "${password}"`;
+  conn.query(sql, (error, results) => {
+  if (error){
+    res.statusCode = 500; //meter un status que tenga aqui
+    console.log(error.sqlMessage);
+    res.send(error.sqlMessage);
+    return;
+  }
+  if (results.length > 0) {
+    res.send(results[0]);
+  }});
+});
 
 router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Users SET ?';

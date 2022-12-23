@@ -71,14 +71,12 @@ router.post('/add', (req, res) => {
     });
   });
 
-  
-router.put('/:id', (req, res) => {
+//Actualizar status (on/off)
+router.put('/updateStatus/:id', (req, res) => {
     const { id } = req.params;
-    const Type = req.body.Type;
-    const Room = req.body.room;
+    const Status = req.body.status;
       const sql = 'UPDATE Devices SET '  +
-      `Type='${Type}',` +
-      `Room='${Room}' ` +
+      `Status='${Status}'` +
       `WHERE ID='${id}'`;
       console.log(sql);
   
@@ -95,6 +93,30 @@ router.put('/:id', (req, res) => {
         }
         res.send('Device updated!');
     });
+});
+
+//Actualizar value (on/off)
+router.put('/updateValue/:id', (req, res) => {
+  const { id } = req.params;
+  const Value = req.body.value;
+    const sql = 'UPDATE Devices SET '  +
+    `Value='${Value}'` +
+    `WHERE ID='${id}'`;
+    console.log(sql);
+
+  conn.query(sql, error => {
+      if (error){
+          if(error.errno == 1054) {
+            res.statusCode = 202; 
+            res.send('No devices found');
+            return;
+          }
+          res.statusCode = 500; //meter un status que tenga aqui
+          res.send(error.sqlMessage);
+          return;
+      }
+      res.send('Device updated!');
+  });
 });
 
 router.delete('/delete/:id', (req, res) => {

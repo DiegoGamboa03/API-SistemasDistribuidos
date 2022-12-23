@@ -3,9 +3,9 @@ const router = new Router();
 const conn = require('../Config/DatabaseConfig');
 
 var rooms = [];
-var devices = [];
 
-router.get('/', (req, res) => {
+
+router.get('/getStatus', (req, res) => {
     const sql = 'SELECT * FROM Rooms';
 
     conn.query(sql, (error, results) => {
@@ -54,7 +54,7 @@ router.get('/', (req, res) => {
                 }
               }
             }
-            res.json(rooms);            
+            res.send(rooms);            
           }
         })
     } 
