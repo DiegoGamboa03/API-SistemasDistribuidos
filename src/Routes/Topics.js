@@ -18,7 +18,11 @@ router.get('/', (req, res) => {
     }
     if (results.length > 0) {
       res.json(results);
-    } 
+    }else{
+      res.statusCode = 202;
+      res.send('No topics found')
+      return;
+    }
     });
 });
 
@@ -39,6 +43,10 @@ router.get('/:id', (req, res) => {
       if (result.length > 0) {
         res.json(result);
         console.log(result)
+      }else{
+        res.statusCode = 202;
+        res.send('No topics found')
+        return;
       }
     });
   });

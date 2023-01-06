@@ -18,8 +18,37 @@ router.get('/', (req, res) => {
     }
     if (results.length > 0) {
       res.json(results);
+    }else{
+      res.statusCode = 202;
+      res.send('No rules found')
+      return;
     }
     });
+});
+
+router.get('/findRule/:device/:topic', (req, res) => {
+  const { device, topic } = req.params;
+  const sql = `SELECT ID_rule, message FROM Device_rules WHERE ID_device = "${device}" AND ID_topic = "${topic}"`;
+
+  conn.query(sql, (error, results) => {
+  if (error){
+    if(error.errno == 1054) {
+      res.statusCode = 202; 
+      res.send('No rules found');
+      return;
+    }
+    res.statusCode = 500; //meter un status que tenga aqui
+    res.send(error.sqlMessage);
+    return;
+  }
+  if (results.length > 0) {
+    res.json(results);
+  }else{
+    res.statusCode = 202;
+    res.send('No rules found')
+    return;
+  }
+  });
 });
 
 router.post('/add', (req, res) => {

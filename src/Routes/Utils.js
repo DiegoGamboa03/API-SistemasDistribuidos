@@ -2,12 +2,11 @@ const { Router } = require('express');
 const router = new Router();
 const conn = require('../Config/DatabaseConfig');
 
-var rooms = [];
 
 
 router.get('/getStatus', (req, res) => {
     const sql = 'SELECT * FROM Rooms';
-
+    let rooms = [];
     conn.query(sql, (error, results) => {
     if (error){
       if(error.errno == 1054) {
@@ -47,7 +46,9 @@ router.get('/getStatus', (req, res) => {
                 if (rooms[i]['IDRoom'] == results2[j]['Room']) {
                   let jsonDevice = {
                     IDDevice: results2[j]['ID'],
-                    Status: results2[j]['Status']
+                    Type: results2[j]['Type'],
+                    Status: results2[j]['Status'],
+                    Value: results2[j]['Value']
                   }
                   //devices.push(jsonDevice);
                   rooms[i].Devices.push(jsonDevice)
@@ -57,6 +58,10 @@ router.get('/getStatus', (req, res) => {
             res.send(rooms);            
           }
         })
+    }else{
+      res.statusCode = 202;
+      res.send('No room found')
+      return;
     } 
     });
 });

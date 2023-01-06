@@ -17,7 +17,11 @@ router.get('/', (req, res) => {
       return;
     }else if (results.length > 0) {
       res.json(results);
-    } 
+    }else{
+      res.statusCode = 202;
+      res.send('No devices found')
+      return;
+    }
     });
 });
 
@@ -37,6 +41,10 @@ router.get('/:id', (req, res) => {
       }else if (result.length > 0) {
         res.json(result[0]);
         console.log(result)
+      }else{
+        res.statusCode = 202;
+        res.send('No devices found')
+        return;
       }
     });
   });
@@ -45,8 +53,9 @@ router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Devices SET ?';
   
     const deviceObj = {
-      id: req.body.ID,
-      type: req.body.Type,
+      ID: req.body.id,
+      Type: req.body.type,
+      Status: req.body.status,
       Room: req.body.room
     };
     

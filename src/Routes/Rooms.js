@@ -18,6 +18,10 @@ router.get('/', (req, res) => {
     }
     if (results.length > 0) {
       res.json(results);
+    }else{
+      res.statusCode = 202;
+      res.send('No room found')
+      return;
     }
     });
 });
@@ -26,7 +30,10 @@ router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Rooms SET ?';
   
     const habObj = {
-      ID: req.body.id
+      ID: req.body.id,
+      Floor: req.body.floor,
+      PosX: req.body.posX,
+      PosY: req.body.posY
     };
     // Aqui poner las verificaciones
     

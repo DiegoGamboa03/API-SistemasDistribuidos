@@ -18,23 +18,14 @@ router.get('/', (req, res) => {
     }
     if (results.length > 0) {
       res.json(results);
+    }else{
+      res.statusCode = 202;
+      res.send('No publisher found')
+      return;
     }
     });
 });
 
-/*router.get('/isPublisher/:idPublisher/:topic', (req, res) => {
-  const { idPublisher, topic } = req.params;
-  const sql = `SELECT confirmPublisher(${idPublisher},"${topic}") AS isPublisher`;
-  conn.query(sql, (error, results) => {
-  if (error){
-    res.statusCode = 500; //meter un status que tenga aqui
-    res.send(error.sqlMessage);
-    return;
-  }
-  if (results.length > 0) {
-    res.send(results[0]);
-  }});
-});*/
 
 router.get('/isPublisher/:idPublisher/:topic', (req, res) => {
   const { idPublisher, topic   } = req.params;
@@ -51,7 +42,12 @@ router.get('/isPublisher/:idPublisher/:topic', (req, res) => {
   }
   if (results.length > 0) {
     res.send(results[0]);
-  }});
+  }else{
+    res.statusCode = 202;
+    res.send('No rules found')
+    return;
+  }
+  });
 });
 
 router.get('/:id/:topic', (req, res) => {
@@ -70,7 +66,11 @@ router.get('/:id/:topic', (req, res) => {
         }
       if (result.length > 0) {
         res.json(result);
-      } 
+      }else{
+        res.statusCode = 202;
+        res.send('No publisher found')
+        return;
+      }
     });
   });
 

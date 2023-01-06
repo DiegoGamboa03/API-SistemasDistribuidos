@@ -18,13 +18,17 @@ router.get('/', (req, res) => {
     }
     if (results.length > 0) {
       res.json(results);
+    }else{
+      res.statusCode = 202;
+      res.send('No rules found')
+      return;
     } 
     });
 });
 
-router.get('/:rule', (req, res) => {
-    const { rule } = req.params;
-    const sql = `SELECT * FROM Rules WHERE Rule = "${rule}"`;
+router.get('/getRule/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = `SELECT * FROM Rules WHERE ID = "${id}"`;
     conn.query(sql, (error, result) => {
         if (error){
           if(error.errno == 1054) {
@@ -37,8 +41,12 @@ router.get('/:rule', (req, res) => {
           return;
         }
       if (result.length > 0) {
-        res.json(result);
-        console.log(result)
+        res.statusCode = 200;
+        res.send(result);
+      }else{
+        res.statusCode = 202;
+        res.send('No rules found')
+        return;
       }
     });
   });
@@ -47,7 +55,7 @@ router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Rules SET ?';
   
     const userObj = {
-      Rule: req.body.rule
+      ID: req.body.id
     };
     
     // Aqui poner las verificaciones
@@ -74,9 +82,9 @@ router.post('/add', (req, res) => {
   });
 
 
-router.delete('/delete/:rule', (req, res) => {
-    const { rule } = req.params;
-    const sql = `DELETE FROM Rules WHERE Rule = "${rule}"`;
+router.delete('/delete/:id', (req, res) => {
+    const { ID } = req.params;
+    const sql = `DELETE FROM Rules WHERE Rule = "${ID}"`;
   
     conn.query(sql, error => {
         if (error){

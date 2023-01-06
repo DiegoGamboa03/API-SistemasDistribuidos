@@ -3,13 +3,12 @@ const router = new Router();
 const conn = require('../Config/DatabaseConfig');
 
 router.get('/', (req, res) => {
-    const sql = 'SELECT * FROM Log_devices';
-
+    const sql = 'SELECT * FROM Floors';
     conn.query(sql, (error, results) => {
     if (error){
       if(error.errno == 1054) {
         res.statusCode = 202; 
-        res.send('No devices found');
+        res.send('No floors found');
         return;
       }
       res.statusCode = 500; //meter un status que tenga aqui
@@ -20,56 +19,50 @@ router.get('/', (req, res) => {
       res.json(results);
     }else{
       res.statusCode = 202;
-      res.send('No log found')
+      res.send('No floors found')
       return;
     }
     });
 });
 
 router.post('/add', (req, res) => {
-    const sql = 'INSERT INTO Log_devices SET ?';
+    const sql = 'INSERT INTO Floors SET ?';
   
-    const LogObj = {
-      Device: req.body.Device,
-      Action_done: req.body.Action_done,
-      Topic: req.body.Topic,
-      Date_time: req.body.Date_time,
+    const floorObj = {
+      ID: req.body.id
     };
-    console.log(LogObj)
     // Aqui poner las verificaciones
-    
-    conn.query(sql, LogObj, error => {
+    conn.query(sql, floorObj, error => {
         if (error){
           if(error.errno == 1054) {
             res.statusCode = 202; 
-            res.send('No entry found');
+            res.send('No floor found');
             return;
           }
           res.statusCode = 500;
           res.send(error.sqlMessage);
           return;
         }
-        res.send('Entry Log created!');
+        res.send('Floor created!');
     });
 });
 
-router.delete('/delete/:device/:action_done/:date_time', (req, res) => {
-    const { device, action_done, date_time } = req.params;
-    const sql = `DELETE FROM Log_devices WHERE Device = "${device}" AND Action_done = "${action_done}" 
-                AND Date_time = "${date_time}"`;
+router.delete('/delete/:id', (req, res) => {
+    const { id } = req.params;
+    const sql = `DELETE FROM Floors WHERE ID = "${id}"`;
   
     conn.query(sql, error => {
         if (error){
           if(error.errno == 1054) {
             res.statusCode = 202; 
-            res.send('No entry found');
+            res.send('No floor found');
             return;
           }
           res.statusCode = 500;
           res.send(error.sqlMessage);
           return;
         }
-        res.send('Delete entry log');
+        res.send('Floor deleted!');
     });
 });
 

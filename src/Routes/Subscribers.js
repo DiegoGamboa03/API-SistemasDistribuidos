@@ -17,7 +17,11 @@ router.get('/', (req, res) => {
       return;
     }else if (results.length > 0) {
       res.json(results);
-    } 
+    }else{
+      res.statusCode = 202;
+      res.send('No devices found')
+      return;
+    }
     });
 });
 
@@ -39,6 +43,10 @@ router.get('/listTopic/:topic', (req, res) => {
       }
     if (result.length > 0) {
       res.json(result); 
+    }else{
+      res.statusCode = 202;
+      res.send('No devices found')
+      return;
     } 
   });
 });
@@ -59,6 +67,10 @@ router.get('/:device/:topic', (req, res) => {
         }
       if (result.length > 0) {
         res.json(result);
+      }else{
+        res.statusCode = 202;
+        res.send('No devices found')
+        return;
       } 
     });
   });

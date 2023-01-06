@@ -20,6 +20,8 @@ app.use('/users', require('./Routes/Users'));
 app.use('/rooms', require('./Routes/Rooms'));
 app.use('/rules', require('./Routes/Rules'));
 app.use('/utils', require('./Routes/Utils'));
+app.use('/device_rules', require('./Routes/Device_rules'));
+app.use('/floors', require('./Routes/Floors'));
 
 app.listen(3000, () =>{
     console.log(`Server on port ${app.get('port')}`)
