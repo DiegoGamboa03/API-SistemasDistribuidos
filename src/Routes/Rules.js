@@ -55,7 +55,10 @@ router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Rules SET ?';
   
     const userObj = {
-      ID: req.body.id
+      ID: req.body.id,
+      Fact: req.body.fact,
+      Operator: req.body.operator,
+      Value: req.body.value
     };
     
     // Aqui poner las verificaciones

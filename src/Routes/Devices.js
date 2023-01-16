@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res) => {
     const { id } = req.params;
-    const sql = `SELECT * FROM Devices WHERE ID = ${id}`;
+    const sql = `SELECT * FROM Devices WHERE ID = '${id}'`;
     conn.query(sql, (error, result) => {
       if (error){
           if(error.errno == 1054) {
@@ -49,6 +49,30 @@ router.get('/:id', (req, res) => {
     });
   });
 
+  //Get devices de acuerdo a su habitación
+  router.get('/room/:room', (req, res) => {
+    const { room } = req.params;
+    const sql = `SELECT ID As IDDevice, Type, Status, Value, Room, SwitchTopic FROM Devices WHERE Room = '${room}'`;
+    conn.query(sql, (error, result) => {
+      if (error){
+          if(error.errno == 1054) {
+            res.statusCode = 202; 
+            res.send('No devices found');
+            return;
+          }
+          res.statusCode = 500; //meter un status que tenga aqui
+          res.send(error.sqlMessage);
+          return;
+      }else if (result.length > 0) {
+        res.json(result);
+      }else{
+        res.statusCode = 202;
+        res.send(result)
+        return;
+      }
+    });
+  });
+
 router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Devices SET ?';
   
@@ -56,7 +80,8 @@ router.post('/add', (req, res) => {
       ID: req.body.id,
       Type: req.body.type,
       Status: req.body.status,
-      Room: req.body.room
+      Room: req.body.room,
+      SwitchTopic: req.body.switchtopic
     };
     
     // Aqui poner las verificaciones

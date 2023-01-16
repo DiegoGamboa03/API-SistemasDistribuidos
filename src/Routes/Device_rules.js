@@ -55,9 +55,10 @@ router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Device_rules SET ?';
   
     const ruleObj = {
-      ID_fact: req.body.fact,
+      ID_rule: req.body.rule,
       ID_device: req.body.device,
-      ID_topic: req.body.topic
+      ID_topic: req.body.topic,
+      message: req.body.message
     };
     // Aqui poner las verificaciones
     

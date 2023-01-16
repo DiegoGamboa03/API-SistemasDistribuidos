@@ -79,8 +79,8 @@ router.post('/add', (req, res) => {
     const sql = 'INSERT INTO Subscribers SET ?';
   
     const SubscriberObj = {
-      device: req.body.Device,
-      topic: req.body.Topic
+      Device: req.body.device,
+      Topic: req.body.topic
     };
     
     // Aqui poner las verificaciones

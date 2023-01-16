@@ -35,7 +35,6 @@ router.post('/add', (req, res) => {
       Topic: req.body.Topic,
       Date_time: req.body.Date_time,
     };
-    console.log(LogObj)
     // Aqui poner las verificaciones
     
     conn.query(sql, LogObj, error => {

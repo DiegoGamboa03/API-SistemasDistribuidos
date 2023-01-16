@@ -46,8 +46,8 @@ router.get('/getStatus', (req, res) => {
               if (floors[i]['IDFloor'] == results2[j]['Floor']) {
                 let jsonRoom = {
                   IDRoom: results2[j]['ID'],
-                  PosX: results2[j]['PosX'],
-                  PosY: results2[j]['PosY'],
+                  PosX: parseFloat(results2[j]['PosX']),
+                  PosY: parseFloat(results2[j]['PosY']),
                   Devices: []
                 }
                 floors[i].Rooms.push(jsonRoom)
